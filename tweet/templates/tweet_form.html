@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home page
+{% endblock %}
+
+{% block content %}
+<div class='flex justify-center items-center flex-col p-4'>   
+<div>
+        <h2 class='font-bold font-serif text-3xl text-center mt-8'>
+        {% if form.instance.pk %}
+            Edit Tweet 
+            {% else %}
+            Create Tweet
+        {% endif %}
+        </h2>
+    </div>
+    <div class='form-group flex items-center justify-center mt-5'>
+        <form method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="{{ form.text.id_for_label }}" class="block font-bold text-gray-700 text-center text-2xl">
+                Tweet
+            </label>
+            {{ form.text }}
+            <div class='mt-5'>
+               
+                    {{form.photo}} 
+            
+                    {% if form.instance.photo %}
+                    <div id="imagePreview" class='mt-4'>
+                        <img src="{{ form.instance.photo.url }}" class='h-20' alt="Current photo">
+                    </div>
+                    {% else %}
+                    <div id="imagePreview" class='mt-4'>
+                        <!-- Empty div to hold the new image preview -->
+                    </div>
+                    {% endif %}
+            </div>
+        
+ 
+        </div>
+            <div class='mt-6'>
+            <button class="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded" type='submit'>Submit</button>
+            <a href='{% url 'tweet_list' %}' class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">Cancel
+            </a>
+            </div>
+        </form>
+    </div>
+</div> 
+        
+
+<script>
+    // JavaScript to handle the image preview
+    document.getElementById('{{ form.photo.id_for_label }}').addEventListener('change', function(event) {
+        const imagePreviewDiv = document.getElementById('imagePreview');
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            imagePreviewDiv.innerHTML = ''; // Clear previous image
+            const imgElement = document.createElement('img');
+            imgElement.src = e.target.result;
+            imgElement.className = 'h-20';
+            imagePreviewDiv.appendChild(imgElement);
+        }
+
+        if (file) {
+            reader.readAsDataURL(file); // Read the file and trigger onload
+        }
+    });
+</script>
+{% endblock %}

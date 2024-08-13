@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class='flex flex-col justify-center items-center mt-10'>
+    <h2 class='font-bold uppercase text-gray-600 shadow-cyan-500'>Register</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class='flex flex-col'>
+
+            <!-- Display non-field errors (e.g., form-wide errors) -->
+            {% if form.non_field_errors %}
+                <div id="non-field-errors" class="text-red-500 text-center mb-4 fade-out">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            
+            <!-- Username field with errors -->
+            <label for="{{ form.username.id_for_label }}" class='font-bold text-center'>
+                Username <i class="fas fa-user"></i>:
+            </label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div id="username-errors" class="text-red-500 text-center fade-out">
+                    {{ form.username.errors }}
+                </div>
+            {% endif %}
+            
+            <!-- Email field with errors -->
+            <label for="{{ form.email.id_for_label }}" class='font-bold text-center'>
+                Email <i class="fas fa-envelope"></i>:
+            </label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div id="email-errors" class="text-red-500 text-center fade-out">
+                    {{ form.email.errors }}
+                </div>
+            {% endif %}
+            
+            <!-- Password1 field with errors -->
+            <label for="{{ form.password1.id_for_label }}" class='font-bold text-center'>
+                Password <i class="fas fa-key"></i>:
+            </label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div id="password1-errors" class="text-red-500 text-center fade-out">
+                    {{ form.password1.errors }}
+                </div>
+            {% endif %}
+            
+            <!-- Password2 field with errors -->
+            <label for="{{ form.password2.id_for_label }}" class='font-bold text-center'>
+                Confirm Password <i class="fas fa-key"></i>:
+            </label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div id="password2-errors" class="text-red-500 text-center fade-out">
+                    {{ form.password2.errors }}
+                </div>
+            {% endif %}
+            
+            <div class='flex justify-center'>
+                <button type='submit' class="inline-block bg-green-500 px-4 py-2 mt-4 text-white font-medium rounded-lg">
+                    Register
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <p class='mt-4 mb-2'>Already have an account?</p>
+    <a href="{% url 'login' %}" class='block px-4 py-2 bg-blue-500 text-white rounded text-center font-medium'>
+        Login
+    </a>
+</div>
+
+<!-- JavaScript to fade out errors after a few seconds -->
+<script>
+    window.addEventListener('load', function() {
+        // Time in milliseconds to start fading (5000ms = 5 seconds)
+        var timeout = 5000;
+        // Time in milliseconds for the fade-out transition
+        var fadeDuration = 1000;
+
+        // Select all error elements
+        var errorElements = document.querySelectorAll("#non-field-errors, #username-errors, #email-errors, #password1-errors, #password2-errors");
+
+        // Apply fade-out after timeout
+        errorElements.forEach(function(element) {
+            if (element) {
+                setTimeout(function() {
+                    element.style.transition = `opacity ${fadeDuration}ms ease`;
+                    element.style.opacity = '0';
+                }, timeout);
+                // Remove the element from the DOM after the fade transition completes
+                setTimeout(function() {
+                    element.style.display = 'none';
+                }, timeout + fadeDuration);
+            }
+        });
+    });
+</script>
+
+<!-- Fade-out effect CSS -->
+<style>
+    .fade-out {
+        opacity: 1;
+    }
+</style>
+{% endblock %}
