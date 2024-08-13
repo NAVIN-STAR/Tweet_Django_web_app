@@ -34,7 +34,7 @@ def tweet_edit(request, tweet_id):
     tweet = get_object_or_404(Tweet, pk=tweet_id, user=request.user)
     if request.method == "POST":
         form = TweetForm(request.POST, request.FILES, instance=tweet)
-        old_photo_path= tweet.photo.path if tweet.photo else None
+        old_photo_path= tweet.photo.url if tweet.photo else None
         if form.is_valid():
             if 'photo' in request.FILES and old_photo_path:
                 # Delete the old photo if it exists
