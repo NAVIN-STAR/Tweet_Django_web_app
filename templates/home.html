@@ -20,12 +20,19 @@
                 <ul class="space-y-4">
                     <li>
                         <div class="flex items-center space-x-4">
+                            {% if tweet.photo %}
                             <img class="w-12 h-12 rounded-full" src="{{tweet.photo.url}}" alt="User Avatar">
+                            <h3 class="text-lg font-bold">@{{ tweet.user.username }}</h3>
+                                <p class="text-black font-semibold">{{ tweet.text }}</p>
+                                <p class="text-gray-500">{{ tweet.created_at }}</p>
+                            {% else %}
                             <div>
                                 <h3 class="text-lg font-bold">@{{ tweet.user.username }}</h3>
                                 <p class="text-black font-semibold">{{ tweet.text }}</p>
                                 <p class="text-gray-500">{{ tweet.created_at }}</p>
                             </div>
+                            {% endif %}
+                            
                         </div>
                     </li>
                 </ul>
