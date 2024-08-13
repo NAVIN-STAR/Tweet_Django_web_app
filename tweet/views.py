@@ -72,7 +72,7 @@ def register(request):
     else:
         form=UserRegistrationForm()
 
-    return render(request, 'Registration/register.html',{'form':form})
+    return render(request, 'registration/register.html',{'form':form})
 
 def search(request):
     query = request.POST.get('q')  # Get the search term from the POST request
