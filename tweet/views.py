@@ -4,6 +4,7 @@ from .forms import TweetForm, UserRegistrationForm, SearchForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
+from django.core.files.storage import default_storage
 import os
 # Create your views here.
 def tweet(request):
@@ -34,11 +35,11 @@ def tweet_edit(request, tweet_id):
     tweet = get_object_or_404(Tweet, pk=tweet_id, user=request.user)
     if request.method == "POST":
         form = TweetForm(request.POST, request.FILES, instance=tweet)
-        old_photo_path= tweet.photo.url if tweet.photo else None
+        old_photo= tweet.photo if tweet.photo else None
         if form.is_valid():
-            if 'photo' in request.FILES and old_photo_path:
+            if 'photo' in request.FILES and old_photo:
                 # Delete the old photo if it exists
-                    os.remove(old_photo_path)
+                    default_storage.delete(old_photo.name)
             tweet = form.save(commit=False)
             tweet.user = request.user
             tweet.save()
@@ -54,7 +55,7 @@ def tweet_delete(request,tweet_id):
     if request.method=="POST":
 
         if tweet.photo:
-            os.remove(tweet.photo.path)
+            default_storage.delete(tweet.photo.name)
         tweet.delete()
         return redirect('tweet_list')
     return render (request,'tweet_confirm_delete.html',{'tweet':tweet})
