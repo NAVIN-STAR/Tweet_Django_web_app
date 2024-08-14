@@ -1,7 +1,7 @@
 # Tweetit
 
 This is a Django-based web application that includes user authentication, tweet creation, and search functionality.
-
+You can access the webiste using https://tweet-django-web-app.vercel.app/ link
 ## Features
 
 - User Registration and Login
